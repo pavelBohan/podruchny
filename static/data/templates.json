@@ -1,0 +1,1 @@
+[{"id": 1, "name": "Классный час", "category": "Внеурочка", "category__slug": "extracurricular", "system_prompt": "Система", "user_prompt_template": "Тема: {topic}", "variables": []}]

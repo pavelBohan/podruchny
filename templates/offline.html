@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оффлайн — Подручный</title>
+    <link rel="stylesheet" href="{% static 'core/css/main.css' %}">
+    <meta name="theme-color" content="#06799F">
+    <style>
+        .offline-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #F5F7FA;
+            padding: 24px;
+        }
+        .offline-card {
+            max-width: 480px;
+            width: 100%;
+            background: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(6, 121, 159, 0.12);
+            padding: 40px 32px;
+            text-align: center;
+        }
+        .offline-card__icon { font-size: 56px; margin-bottom: 16px; }
+        .offline-card__title { color: #045670; font-family: 'Montserrat', sans-serif; margin-bottom: 12px; }
+        .offline-card__text { color: #6B7280; font-family: 'Inter', sans-serif; line-height: 1.6; }
+        .offline-card__button {
+            display: inline-block;
+            margin-top: 24px;
+            padding: 12px 28px;
+            background: #FF8C00;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-page">
+        <div class="offline-card">
+            <div class="offline-card__icon">📡</div>
+            <h1 class="offline-card__title">Нет подключения к интернету</h1>
+            <p class="offline-card__text">
+                Не страшно! Конструктор промптов «Подручный» работает и без сети —
+                все шаблоны уже сохранены на вашем устройстве.
+                Перейдите в конструктор и сгенерируйте промпт как обычно.
+            </p>
+            <a class="offline-card__button" href="/constructor/">Открыть конструктор</a>
+        </div>
+    </div>
+</body>
+</html>

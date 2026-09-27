@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}История промптов — Подручный{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>🕘 История промптов</h1>
+    <p class="subtitle">Эта страница работает полностью оффлайн: данные хранятся в памяти вашего устройства (localStorage).</p>
+
+    <div class="history-actions" style="margin-bottom: 1.5rem;">
+        <button class="btn btn--outline btn--sm" id="clear-history-btn">🗑️ Очистить историю</button>
+    </div>
+
+    <div id="history-list">
+        <p class="empty-state">Загрузка…</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'core/js/prompt-generator.js' %}"></script>
+<script src="{% static 'core/js/history.js' %}"></script>
+{% endblock %}

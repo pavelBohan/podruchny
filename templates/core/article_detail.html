@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ article.title }} — Гайдбук — Подручный{% endblock %}
+
+{% block content %}
+<div class="container article-page">
+    <article class="article">
+        <header class="article__header">
+            <span class="article__category">{{ article.get_category_display }}</span>
+            <h1 class="article__title">{{ article.title }}</h1>
+            <p class="article__meta">
+                {% if article.author %}Автор: {{ article.author }} · {% endif %}
+                {{ article.published_at|date:"d.m.Y" }} · Просмотров: {{ article.views }}
+            </p>
+        </header>
+
+        <div class="article__content">
+            {{ article.content|linebreaks }}
+        </div>
+    </article>
+
+    {% if related %}
+    <aside class="article-related">
+        <h2 class="article-related__title">Читайте также</h2>
+        <ul class="article-related__list">
+            {% for rel in related %}
+            <li>
+                <a href="{% url 'core:article_detail' rel.slug %}">{{ rel.title }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </aside>
+    {% endif %}
+
+    <a href="{% url 'core:guide' %}" class="btn btn--secondary">← Все статьи</a>
+</div>
+{% endblock %}
