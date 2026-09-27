@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json
+from urllib.parse import quote
 from .forms import PromptConstructorForm
 from .models import Category, PromptTemplate, GeneratedPrompt, GuideArticle
 
@@ -10,6 +11,11 @@ from .models import Category, PromptTemplate, GeneratedPrompt, GuideArticle
 def home(request):
     """Главная страница"""
     return render(request, 'core/home.html')
+
+
+def offline_page(request):
+    """Заглушка для полностью оффлайн-режима (отдаётся Service Worker'ом)"""
+    return render(request, 'offline.html')
 
 
 def guide(request):
@@ -52,10 +58,14 @@ def constructor(request):
     """Конструктор промптов"""
     categories = Category.objects.filter(is_active=True).order_by('order')
     form = PromptConstructorForm()
-    
+
+    # Предустановка из query-параметров (?category=slug&template=id) —
+    # ссылки из библиотеки шаблонов
     return render(request, 'core/constructor.html', {
         'form': form,
         'categories': categories,
+        'preset_category': request.GET.get('category', ''),
+        'preset_template': request.GET.get('template', ''),
     })
 
 
@@ -68,11 +78,31 @@ def generate_prompt_api(request):
         category_slug = data.get('category')
         context_data = data.get('context', {})
         
-        # Находим шаблон
-        template = PromptTemplate.objects.filter(
-            category__slug=category_slug,
-            is_active=True
-        ).first()
+        # Серверная валидация (зеркалит JS-валидатор prompt-generator.js)
+        required_fields = ['subject', 'grade', 'topic']
+        missing = [f for f in required_fields
+                   if not str(context_data.get(f, '')).strip()]
+        if missing:
+            return JsonResponse(
+                {'error': 'Не заполнены обязательные поля: ' + ', '.join(missing)},
+                status=400
+            )
+
+        allowed_tones = ['professional', 'friendly', 'strict', 'motivational']
+        tone = context_data.get('tone', 'professional')
+        context_data['tone'] = tone if tone in allowed_tones else 'professional'
+
+        extra = str(context_data.get('additional_context', '')).strip()[:500]
+        context_data['additional_context'] = extra
+        context_data.setdefault('context', extra)
+
+        # Находим шаблон (можно передать template_id для выбора конкретного)
+        template_id = data.get('template_id')
+        qs = PromptTemplate.objects.filter(is_active=True)
+        if template_id:
+            template = qs.filter(pk=template_id).first()
+        else:
+            template = qs.filter(category__slug=category_slug).first()
         
         if not template:
             return JsonResponse({'error': 'Шаблон не найден'}, status=404)
@@ -94,7 +124,7 @@ def generate_prompt_api(request):
         return JsonResponse({
             'success': True,
             'prompt': generated_prompt,
-            'qwen_url': f"https://chat.qwen.ai/?prompt={generated_prompt}"
+            'qwen_url': 'https://chat.qwen.ai/?prompt=' + quote(generated_prompt[:1800])
         })
         
     except Exception as e:
@@ -103,8 +133,15 @@ def generate_prompt_api(request):
 
 def templates_list(request):
     """Библиотека шаблонов"""
-    templates = PromptTemplate.objects.filter(is_active=True)
-    return render(request, 'core/templates.html', {'templates': templates})
+    templates = (PromptTemplate.objects
+                 .filter(is_active=True, category__is_active=True)
+                 .select_related('category'))
+    return render(request, 'core/templates_page.html', {'templates': templates})
+
+
+def history_page(request):
+    """Оффлайн-история промптов (данные берутся из localStorage на клиенте)"""
+    return render(request, 'core/history.html')
 
 
 @login_required

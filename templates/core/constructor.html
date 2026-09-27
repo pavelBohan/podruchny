@@ -22,6 +22,10 @@
                     {% endfor %}
                 </select>
             </div>
+
+            <!-- Динамический выбор шаблона внутри категории (заполняет constructor.js) -->
+            <div class="form-group" id="template-choice" style="display: none;"></div>
+
             <button type="button" class="btn btn--primary" onclick="nextStep(2)">Далее →</button>
         </div>
         
@@ -84,5 +88,6 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="{% static 'core/js/prompt-generator.js' %}"></script>
 <script src="{% static 'core/js/constructor.js' %}"></script>
 {% endblock %}
