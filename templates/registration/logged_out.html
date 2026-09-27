@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Выход — Подручный{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card" style="text-align: center; padding: 3rem;">
+        <h2>Вы вышли из системы</h2>
+        <p style="margin: 1rem 0;">Спасибо, что использовали Подручный!</p>
+        <a href="{% url 'core:home' %}" class="btn btn--primary">Вернуться на главную</a>
+        <a href="{% url 'login' %}" class="btn btn--outline" style="margin-left: 1rem;">Войти снова</a>
+    </div>
+</div>
+{% endblock %}

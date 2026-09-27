@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Профиль — Подручный{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>👤 Мой профиль</h1>
+    
+    <div class="profile-header">
+        <p><strong>Пользователь:</strong> {{ user.username }}</p>
+        <p><strong>Всего промптов:</strong> {{ prompts.count }}</p>
+    </div>
+    
+    <h2>📚 История промптов</h2>
+    
+    {% if prompts %}
+        <div class="prompts-list">
+            {% for prompt in prompts %}
+            <div class="card prompt-item">
+                <div class="prompt-header">
+                    <span class="prompt-category">{{ prompt.category.name }}</span>
+                    <span class="prompt-date">{{ prompt.created_at|date:"d.m.Y H:i" }}</span>
+                </div>
+                <div class="prompt-content">
+                    <pre>{{ prompt.generated_prompt|truncatechars:200 }}</pre>
+                </div>
+                <div class="prompt-actions">
+                    <button class="btn btn--outline btn--sm" onclick="copyText('{{ prompt.id }}')">📋 Копировать</button>
+                    <a href="https://chat.qwen.ai/?prompt={{ prompt.generated_prompt|urlencode }}" 
+                       class="btn btn--secondary btn--sm" target="_blank">🤖 В Qwen</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-state">У вас пока нет сгенерированных промптов.</p>
+        <a href="{% url 'core:constructor' %}" class="btn btn--primary">Создать первый промпт</a>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyText(promptId) {
+    // Реализация копирования конкретного промпта
+    const text = document.querySelector(`[data-prompt-id="${promptId}"]`).textContent;
+    navigator.clipboard.writeText(text).then(() => {
+        alert('✅ Скопировано!');
+    });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,39 @@
+# === Python ===
+venv/
+.env
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# === Django ===
+db.sqlite3
+*.log
+local_settings.py
+media/
+staticfiles/
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === C# ===
+cs_module/bin/
+cs_module/obj/
+*.dll
+*.exe
+
+# === Secrets ===
+*.key
+*.pem
+secrets.json

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Гайдбук по ИИ — Подручный{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>📚 Гайдбук по ИИ для учителей</h1>
+    <p class="subtitle">Методические материалы и рекомендации</p>
+    
+    <!-- Фильтр по категориям -->
+    <div class="guide-filters">
+        <a href="{% url 'core:guide' %}" class="filter-chip {% if not current_category %}active{% endif %}">
+            Все
+        </a>
+        {% for slug, name in categories %}
+        <a href="?category={{ slug }}" class="filter-chip {% if current_category == slug %}active{% endif %}">
+            {{ name }}
+        </a>
+        {% endfor %}
+    </div>
+    
+    <!-- Список статей -->
+    <div class="articles-grid">
+        {% for article in articles %}
+        <a href="{% url 'core:article_detail' article.slug %}" class="article-card">
+            <div class="article-card__header">
+                <span class="article-category">{{ article.get_category_display }}</span>
+                <span class="article-date">{{ article.published_at|date:"d.m.Y" }}</span>
+            </div>
+            <h3>{{ article.title }}</h3>
+            <p>{{ article.excerpt }}</p>
+            <div class="article-meta">
+                <span>👁 {{ article.views }}</span>
+                {% if article.author %}<span>✍️ {{ article.author }}</span>{% endif %}
+            </div>
+        </a>
+        {% empty %}
+        <p class="empty-state">Статей в этой категории пока нет.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

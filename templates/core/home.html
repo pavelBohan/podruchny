@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Подручный — Главная{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="hero">
+        <h1>ВАШ ПОМОЩНИК В МИРЕ ИИ</h1>
+        <p class="hero__subtitle">Создавайте качественные промпты за минуты</p>
+        <a href="{% url 'core:constructor' %}" class="btn btn--primary">
+            Начать бесплатно
+        </a>
+    </section>
+
+    <section class="features">
+        <h2>Возможности</h2>
+        <div class="features__grid">
+            <div class="card">
+                <h3>🎯 Конструктор промптов</h3>
+                <p>Ответьте на вопросы и получите готовый промпт для ИИ</p>
+            </div>
+            <div class="card">
+                <h3>📚 Гайдбук по ИИ</h3>
+                <p>Методические материалы и рекомендации для учителей</p>
+            </div>
+            <div class="card">
+                <h3>⭐ Библиотека шаблонов</h3>
+                <p>Готовые промпты для быстрых задач</p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

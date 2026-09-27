@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Конструктор промптов — Подручный{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>🎯 Конструктор промптов</h1>
+    <p class="subtitle">Ответьте на вопросы и получите готовый промпт для ИИ</p>
+    
+    <form id="prompt-form" class="constructor-form">
+        {% csrf_token %}
+        
+        <!-- Шаг 1: Категория -->
+        <div class="form-step" id="step-category">
+            <div class="form-group">
+                <label class="form-label">Выберите категорию помощи</label>
+                <select name="category" id="category-select" class="form-input" required>
+                    <option value="">-- Выберите категорию --</option>
+                    {% for category in categories %}
+                        <option value="{{ category.slug }}">{{ category.icon }} {{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="button" class="btn btn--primary" onclick="nextStep(2)">Далее →</button>
+        </div>
+        
+        <!-- Шаг 2: Основные данные -->
+        <div class="form-step" id="step-basic" style="display: none;">
+            <div class="form-group">
+                <label class="form-label">Предмет</label>
+                <input type="text" name="subject" class="form-input" placeholder="Например: Математика" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Класс</label>
+                <input type="text" name="grade" class="form-input" placeholder="Например: 5 &quot;Б&quot;" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Тема урока/задания</label>
+                <input type="text" name="topic" class="form-input" placeholder="Например: Дроби" required>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn--outline" onclick="prevStep(1)">← Назад</button>
+                <button type="button" class="btn btn--primary" onclick="nextStep(3)">Далее →</button>
+            </div>
+        </div>
+        
+        <!-- Шаг 3: Контекст и тон -->
+        <div class="form-step" id="step-context" style="display: none;">
+            <div class="form-group">
+                <label class="form-label">Дополнительный контекст</label>
+                <textarea name="context" class="form-input" rows="4" placeholder="Особенности класса, цели урока..."></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Тон ответа</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="tone" value="professional" checked> 🎓 Профессиональный</label>
+                    <label><input type="radio" name="tone" value="friendly"> 😊 Дружелюбный</label>
+                    <label><input type="radio" name="tone" value="strict"> ⚖️ Строгий</label>
+                    <label><input type="radio" name="tone" value="motivational"> 🔥 Мотивирующий</label>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn--outline" onclick="prevStep(2)">← Назад</button>
+                <button type="submit" class="btn btn--primary">✨ Сгенерировать промпт</button>
+            </div>
+        </div>
+    </form>
+    
+    <!-- Результат -->
+    <div id="result-section" class="result-section" style="display: none;">
+        <h2>✅ Готовый промпт</h2>
+        <div class="prompt-output" id="prompt-output"></div>
+        
+        <div class="result-actions">
+            <button class="btn btn--primary" onclick="copyPrompt()">📋 Копировать</button>
+            <a href="#" id="qwen-link" class="btn btn--secondary" target="_blank" rel="noopener">
+                🤖 Открыть в Qwen
+            </a>
+            <button class="btn btn--outline" onclick="resetForm()">🔄 Создать новый</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'core/js/constructor.js' %}"></script>
+{% endblock %}

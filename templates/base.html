@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Подручный — Ваш помощник в мире ИИ{% endblock %}</title>
+    
+    <!-- Шрифты из брендбука -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Основные стили -->
+    <link rel="stylesheet" href="{% static 'core/css/main.css' %}">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#06799F">
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <div class="container header__container">
+            <a href="{% url 'core:home' %}" class="logo">
+                <span class="logo__icon">🤝</span>
+                <span class="logo__text">ПОДРУЧНЫЙ</span>
+            </a>
+            
+            <nav class="nav">
+                <a href="{% url 'core:home' %}" class="nav__link">Главная</a>
+                <a href="{% url 'core:guide' %}" class="nav__link">Гайдбук</a>
+                <a href="{% url 'core:constructor' %}" class="nav__link">Конструктор</a>
+                <a href="{% url 'core:templates' %}" class="nav__link">Шаблоны</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'core:profile' %}" class="nav__link">Профиль</a>
+                    <a href="/accounts/logout/" class="nav__link nav__link--logout">Выход</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="nav__link nav__link--accent">Войти</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Подручный. Инструмент для учителей.</p>
+        </div>
+    </footer>
+
+    <!-- Скрипты -->
+    <script src="{% static 'core/js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
