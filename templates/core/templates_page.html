@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Библиотека шаблонов — Подручный{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>⭐ Библиотека шаблонов</h1>
+    <p class="subtitle">Готовые промпты для частых учительских задач. Выберите шаблон и откройте его в конструкторе.</p>
+
+    {% regroup templates by category as template_groups %}
+    {% for group in template_groups %}
+        <section class="template-group">
+            <h2>{{ group.grouper.icon }} {{ group.grouper.name }}</h2>
+            <div class="templates-grid">
+                {% for tpl in group.list %}
+                    <div class="card template-card">
+                        <h3>{{ tpl.name }}</h3>
+                        <p class="template-excerpt">{{ tpl.system_prompt|truncatechars:140 }}</p>
+                        <a href="{% url 'core:constructor' %}?category={{ tpl.category.slug }}&template={{ tpl.id }}"
+                           class="btn btn--primary btn--sm">
+                            ✨ Использовать в конструкторе
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    {% empty %}
+        <p class="empty-state">Шаблоны ещё не добавлены. Заполните базу через админ-панель и выполните экспорт.</p>
+    {% endfor %}
+</div>
+{% endblock %}

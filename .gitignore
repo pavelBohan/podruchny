@@ -1,39 +1,22 @@
-# === Python ===
-venv/
-.env
-*.pyc
+# Python
 __pycache__/
+*.pyc
 *.pyo
-*.pyd
-.Python
-pip-log.txt
-pip-delete-this-directory.txt
-
-# === Django ===
+venv/
+.venv/
+env/
+# Django
 db.sqlite3
-*.log
-local_settings.py
-media/
 staticfiles/
-
-# === IDE ===
-.vscode/
+*.log
+server.log
+cookies.txt
+# IDE / OS
 .idea/
-*.swp
-*.swo
-*~
-
-# === OS ===
+.vscode/
 .DS_Store
-Thumbs.db
-
-# === C# ===
-cs_module/bin/
-cs_module/obj/
-*.dll
-*.exe
-
-# === Secrets ===
-*.key
-*.pem
-secrets.json
+# .NET
+cs_module/**/bin/
+cs_module/**/obj/
+# Env
+.env

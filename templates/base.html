@@ -32,6 +32,7 @@
                 <a href="{% url 'core:guide' %}" class="nav__link">Гайдбук</a>
                 <a href="{% url 'core:constructor' %}" class="nav__link">Конструктор</a>
                 <a href="{% url 'core:templates' %}" class="nav__link">Шаблоны</a>
+                <a href="{% url 'core:history' %}" class="nav__link">История</a>
                 {% if user.is_authenticated %}
                     <a href="{% url 'core:profile' %}" class="nav__link">Профиль</a>
                     <a href="/accounts/logout/" class="nav__link nav__link--logout">Выход</a>
@@ -56,6 +57,16 @@
 
     <!-- Скрипты -->
     <script src="{% static 'core/js/main.js' %}"></script>
+    <script>
+        // Регистрация Service Worker для оффлайн-режима (PWA)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('{% static 'sw.js' %}', { scope: '/' })
+                    .then(function (reg) { console.log('SW registered:', reg.scope); })
+                    .catch(function (err) { console.error('SW registration failed:', err); });
+            });
+        }
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

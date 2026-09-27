@@ -466,3 +466,91 @@ body {
   font-size: 0.75rem;
   color: var(--text-gray);
 }
+/* === Новые компоненты: авторизация, библиотека шаблонов, история === */
+
+.auth-card {
+  max-width: 420px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
+.auth-form .form-group {
+  margin-bottom: 1.25rem;
+}
+
+.auth-hint {
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-gray);
+  text-align: center;
+}
+
+.btn--block {
+  display: block;
+  width: 100%;
+}
+
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.alert--error {
+  background: #FEF2F2;
+  color: var(--error-red);
+  border: 1px solid var(--error-red);
+}
+
+.templates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.template-card h3 {
+  font-family: var(--font-heading);
+  color: var(--dark-blue);
+  margin-bottom: 0.5rem;
+}
+
+.template-excerpt {
+  color: var(--text-gray);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.template-option {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--secondary-blue);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  background: var(--bg-light);
+}
+
+.template-option:has(input:checked) {
+  border-color: var(--primary-blue);
+  background: rgba(107, 197, 232, 0.15);
+  font-weight: 500;
+}
+
+.hint {
+  color: var(--text-gray);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.btn--danger {
+  background: transparent;
+  color: var(--error-red);
+  border: 1px solid var(--error-red);
+}
+
+.btn--danger:hover {
+  background: var(--error-red);
+  color: #fff;
+}
